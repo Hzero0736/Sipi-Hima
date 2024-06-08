@@ -12,13 +12,53 @@
           <div class="card-header">
 
             <!-- Tambah Barang -->
-            <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#basicModal">
-              Tambah Barang
-            </button>
-            <!-- <button type="button" class="btn btn-primary mb-3" href="/barang/generatePdf">
-              Print
-            </button> -->
-            <a class="btn btn-primary mb-3" href="/Barang/generatePdf"></a>
+            <div class="col-12 mb-3">
+              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#basicModal"><i class="ri-folder-add-line"></i>Tambah Barang</button>
+              <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalCetakPDF"><i class="ri-file-pdf-2-line"></i>Cetak PDF</button>
+
+              <!-- Modal Cetak PDF -->
+              <div class="modal fade" id="modalCetakPDF" tabindex="-1" aria-labelledby="modalCetakPDFLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="modalCetakPDFLabel">Cetak Laporan Barang</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <form action="/barang/generatepdf" method="get" target="_blank">
+                        <div class="mb-3">
+                          <label for="kategori" class="form-label">Kategori</label>
+                          <select class="form-select" id="kategori" name="kategori">
+                            <option value="">Semua Kategori</option>
+                            <?php foreach ($kategori as $k) : ?>
+                              <option value="<?= $k['idkategori'] ?>"><?= $k['nama_kategori'] ?></option>
+                            <?php endforeach; ?>
+                          </select>
+                        </div>
+                        <div class="mb-3">
+                          <label for="start_date" class="form-label">Tanggal Awal</label>
+                          <input type="date" class="form-control" id="start_date" name="start_date">
+                        </div>
+                        <div class="mb-3">
+                          <label for="end_date" class="form-label">Tanggal Akhir</label>
+                          <input type="date" class="form-control" id="end_date" name="end_date">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                      <button type="submit" class="btn btn-success">Cetak PDF</button>
+                    </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+
+
+
+
 
             <!-- Flash Data -->
             <?php if (session()->getFlashdata('success')) : ?>
@@ -109,7 +149,7 @@
                   <tr>
                     <td><?= $brg['kdbarang']; ?></td>
                     <td><?= $brg['nama_barang']; ?></td>
-                    <td><?= $brg['tgl_masuk']; ?></td>
+                    <td><?= date('d-M-Y', strtotime($brg['tgl_masuk'])); ?></td>
                     <td><?= $brg['nama_kategori']; ?></td>
                     <td><?= $brg['kondisi_barang']; ?></td>
                     <th scope="row">

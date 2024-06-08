@@ -41,10 +41,6 @@ class Autoload extends AutoloadConfig
      */
     public $psr4 = [
         // APP_NAMESPACE => APPPATH,
-        'App'         => APPPATH,
-        'Config'      => APPPATH . 'Config',
-        'App\ThirdParty' => APPPATH . 'ThirdParty',
-
     ];
 
     /**
@@ -64,9 +60,7 @@ class Autoload extends AutoloadConfig
      *
      * @var array<string, string>
      */
-    public $classmap = [
-        'Pdf' => APPPATH . 'Libraries/Pdf.php',
-    ];
+    public $classmap = [];
 
     /**
      * -------------------------------------------------------------------

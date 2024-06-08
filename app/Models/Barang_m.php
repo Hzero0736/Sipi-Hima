@@ -80,6 +80,34 @@ class Barang_m extends Model
         return $this->update(['kdbarang' => $kdbarang], $data);
     }
 
+    public function getBarangByFilter($kategori = null, $start_date = null, $end_date = null, $cetak_semua = false)
+    {
+        $builder = $this->db->table('barang');
+        $builder->select('barang.*, kategori.nama_kategori');
+        $builder->join('kategori', 'barang.idkategori = kategori.idkategori');
+
+        if (!$cetak_semua) {
+            if ($kategori) {
+                $builder->where('barang.idkategori', $kategori);
+            } else {
+                // Jika kategori tidak dipilih, tampilkan semua kategori
+                $builder->groupStart();
+                $builder->orWhere('barang.idkategori IS NOT NULL');
+                $builder->groupEnd();
+            }
+            if ($start_date && $end_date) {
+                $builder->where('barang.tgl_masuk >=', $start_date);
+                $builder->where('barang.tgl_masuk <=', $end_date);
+            } elseif ($start_date) {
+                $builder->where('barang.tgl_masuk >=', $start_date);
+            } elseif ($end_date) {
+                $builder->where('barang.tgl_masuk <=', $end_date);
+            }
+
+            return $builder->get()->getResultArray();
+        }
+    }
+
     public function getBarangByKondisi($kondisi)
     {
         return $this->where(['kondisi_barang' => $kondisi])->findAll();

@@ -4,10 +4,9 @@ namespace App\Controllers;
 
 use App\Controllers\BaseController;
 use CodeIgniter\HTTP\ResponseInterface;
+use App\Libraries\Pdfgenerator;
 use App\Models\Barang_m;
 use App\Models\Kategori_m;
-use CodeIgniter\Validation\ValidationInterface;
-use Fpdf\Fpdf;
 
 class Barang extends BaseController
 {
@@ -21,113 +20,6 @@ class Barang extends BaseController
         $this->barangModel = new Barang_m();
         $this->validation = \Config\Services::validation();
     }
-
-
-    public function generatePdf()
-    {
-        // Buat instance FPDF
-        $pdf = new Fpdf();
-
-
-        // Tambah halaman
-        $pdf->AddPage();
-
-        // Atur margin
-        $pdf->SetMargins(10, 10, 10);
-
-        // Atur font untuk kop surat
-        $pdf->SetFont('Arial', 'B', 14);
-
-        // Tambah logo (pastikan Anda memiliki file logo di direktori public)
-        // Sesuaikan path dan ukuran logo
-        $pdf->Image(base_url('hmti.png'), 10, 10, 30);
-
-        // Nama perusahaan
-        $pdf->Cell(40); // Menambahkan jarak ke kanan
-        $pdf->Cell(0, 10, 'Nama Perusahaan', 0, 1, 'C');
-
-        // Alamat perusahaan
-        $pdf->SetFont('Arial', '', 12);
-        $pdf->Cell(40); // Menambahkan jarak ke kanan
-        $pdf->Cell(0, 10, 'Alamat Perusahaan, Kota, Provinsi, Kode Pos', 0, 1, 'C');
-
-        // Informasi kontak
-        $pdf->Cell(40); // Menambahkan jarak ke kanan
-        $pdf->Cell(0, 10, 'Telepon: (021) 12345678 | Email: info@perusahaan.com', 0, 1, 'C');
-
-        // Garis pembatas
-        $pdf->Line(10, 40, 200, 40);
-        $pdf->Ln(20); // Tambah jarak setelah kop surat
-
-        // Tambahkan isi laporan atau tabel di sini
-        // Misalnya, tambahkan judul laporan
-        $pdf->SetFont('Arial', 'B', 12);
-        $pdf->Cell(0, 10, 'Laporan Barang', 0, 1, 'C');
-        $pdf->Ln(10);
-
-        // Tabel header
-        $pdf->SetFont('Arial', 'B', 10);
-        $pdf->Cell(10, 10, 'No', 1);
-        $pdf->Cell(50, 10, 'Nama Barang', 1);
-        $pdf->Cell(30, 10, 'Jumlah', 1);
-        $pdf->Cell(30, 10, 'Harga', 1);
-        $pdf->Cell(30, 10, 'Subtotal', 1);
-        $pdf->Ln();
-
-        // Tabel isi (contoh data, bisa diganti dengan data dari database)
-        $pdf->SetFont('Arial', '', 10);
-        // $barang = [
-        //     ['nama' => 'Barang 1', 'jumlah' => 10, 'harga' => 10000],
-        //     ['nama' => 'Barang 2', 'jumlah' => 5, 'harga' => 20000],
-        // ];
-        // $no = 1;
-        // foreach ($barang as $item) {
-        //     $subtotal = $item['jumlah'] * $item['harga'];
-        //     $pdf->Cell(10, 10, $no++, 1);
-        //     $pdf->Cell(50, 10, $item['nama'], 1);
-        //     $pdf->Cell(30, 10, $item['jumlah'], 1);
-        //     $pdf->Cell(30, 10, number_format($item['harga']), 1);
-        //     $pdf->Cell(30, 10, number_format($subtotal), 1);
-        //     $pdf->Ln();
-        // }
-
-        // Output PDF
-        $pdf->Output('D', 'laporan_barang.pdf');
-    }
-    // public function generatePdf()
-    // {
-    //     $pdf = new Fpdf();
-    //     // Tambah halaman
-    //     $pdf->AddPage();
-
-    //     // Atur margin
-    //     $pdf->SetMargins(10, 10, 10);
-
-    //     // Atur font untuk kop surat
-    //     $pdf->SetFont('Arial', 'B', 14);
-
-    //     // Tambah logo (pastikan Anda memiliki file logo di direktori public)
-    //     // $pdf->Image(base_url('assets/img/hmti.png'), 10, 10, 30); // Sesuaikan path dan ukuran logo
-
-    //     // Nama perusahaan
-    //     $pdf->Cell(40);
-    //     $pdf->Cell(0, 10, 'Nama Perusahaan', 0, 1, 'C');
-
-    //     // Alamat perusahaan
-    //     $pdf->SetFont('Arial', '', 12);
-    //     $pdf->Cell(40);
-    //     $pdf->Cell(0, 10, 'Alamat Perusahaan, Kota, Provinsi, Kode Pos', 0, 1, 'C');
-
-    //     // Informasi kontak
-    //     $pdf->Cell(40);
-    //     $pdf->Cell(0, 10, 'Telepon: (021) 12345678 | Email: info@perusahaan.com', 0, 1, 'C');
-
-    //     // Garis pembatas
-    //     $pdf->Line(10, 40, 200, 40);
-    //     $pdf->Ln(20); // Tambah jarak setelah kop surat
-
-    //     $pdf->Output('D', 'laporan_barang.pdf');
-    // }
 
     public function index()
     {
@@ -318,5 +210,33 @@ class Barang extends BaseController
             session()->setFlashdata('success', 'Data berhasil dihapus');
             return redirect()->to('/barang');
         }
+    }
+
+
+    public function generatepdf()
+    {
+
+        $kategori = $this->request->getGet('kategori');
+        $start_date = $this->request->getGet('start_date');
+        $end_date = $this->request->getGet('end_date');
+        $cetak_semua = $this->request->getGet('cetak_semua');
+
+        $Pdfgenerator = new Pdfgenerator();
+        $data = [
+            'title' => 'Laporan Barang',
+            'barang' => $this->barangModel->getBarangByFilter($kategori, $start_date, $end_date, $cetak_semua),
+        ];
+
+        // filename dari pdf ketika didownload
+        $file_pdf = 'laporan_Barang_HIMA';
+        // setting paper
+        $paper = 'A4';
+        //orientasi paper potrait / landscape
+        $orientation = "portrait";
+
+        $html = view('admin/laporanbarang', $data);
+
+        // run dompdf
+        $Pdfgenerator->generate($html, $file_pdf, $paper, $orientation);
     }
 }
