@@ -14,7 +14,10 @@
             <!-- Tambah Barang -->
             <div class="col-12 mb-3">
               <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#basicModal"><i class="ri-folder-add-line"></i>Tambah Barang</button>
-              <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalCetakPDF"><i class="ri-file-pdf-2-line"></i>Cetak PDF</button>
+
+              <?php if ($level_user == 'admin') : ?>
+                <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalCetakPDF"><i class="ri-file-pdf-2-line"></i>Cetak PDF</button>
+              <?php endif; ?>
 
               <!-- Modal Cetak PDF -->
               <div class="modal fade" id="modalCetakPDF" tabindex="-1" aria-labelledby="modalCetakPDFLabel" aria-hidden="true">

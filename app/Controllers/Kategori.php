@@ -5,26 +5,35 @@ namespace App\Controllers;
 use App\Controllers\BaseController;
 use CodeIgniter\HTTP\ResponseInterface;
 use App\Models\Kategori_m;
+use App\Models\Pengguna_m;
 
 class Kategori extends BaseController
 {
     protected $kategorimodel;
+    protected $penggunaModel;
 
     public function __construct()
     {
+        $this->penggunaModel = new Pengguna_m();
         $this->kategorimodel = new Kategori_m();
     }
 
     public function index()
     {
+        $iduser = session()->get('iduser');
+        $user = $this->penggunaModel->find($iduser);
+        $level_user = $user['level'];
+        $nama_user = $user['nama'];
         $data = [
             'title' => 'Kategori | Inventaris HIMA-TI',
-            'kategori' => $this->kategorimodel->getKategori()
+            'kategori' => $this->kategorimodel->getKategori(),
+            'level_user' => $level_user,
+            'nama_user' => $nama_user
         ];
 
         echo view('layout/header', $data);
-        echo view('layout/topbar');
-        echo view('layout/sidebar_admin');
+        echo view('layout/topbar', $data);
+        echo view('layout/sidebar_admin', $data);
         echo view('admin/kategoribarang', $data);
         echo view('layout/footer');
     }

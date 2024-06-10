@@ -94,17 +94,20 @@
 
       <div class="col-lg-6 mx-auto">
 
-        <div class="card bg-primary text-white">
-          <div class="card-body">
-            <h5 class="card-title text-white">Data pengguna</h5>
-            <div class="center-text">
-              <h1>50</h1>
-            </div>
-            <div class="center-text mt-3">
-              <a href="#" class="text-decoration-none text-white">Lihat Detail</a>
+        <?php if ($level_user == 'admin') : ?>
+          <div class="card bg-primary text-white">
+            <div class="card-body">
+              <h5 class="card-title text-white">Data pengguna</h5>
+              <div class="center-text">
+                <h1><?= $jumlahpengguna; ?></h1>
+              </div>
+              <div class="center-text mt-3">
+                <a href="#" class="text-decoration-none text-white">Lihat Detail</a>
+              </div>
             </div>
           </div>
-        </div>
+        <?php endif; ?>
+
       </div>
 
     </div>

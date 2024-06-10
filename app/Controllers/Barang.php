@@ -7,26 +7,35 @@ use CodeIgniter\HTTP\ResponseInterface;
 use App\Libraries\Pdfgenerator;
 use App\Models\Barang_m;
 use App\Models\Kategori_m;
+use App\Models\Pengguna_m;
 
 class Barang extends BaseController
 {
     protected $kategoriModel;
     protected $barangModel;
+    protected $penggunaModel;
     protected $validation;
 
     public function __construct()
     {
         $this->kategoriModel = new Kategori_m();
         $this->barangModel = new Barang_m();
+        $this->penggunaModel = new Pengguna_m();
         $this->validation = \Config\Services::validation();
     }
 
     public function index()
     {
+        $iduser = session()->get('iduser');
+        $user = $this->penggunaModel->find($iduser);
+        $level_user = $user['level'];
+        $nama_user = $user['nama'];
         $data = [
             'title' => 'Barang | Inventaris HIMA-TI',
             'barang' => $this->barangModel->getBarang(),
             'kategori' => $this->kategoriModel->getKategori(),
+            'level_user' => $level_user,
+            'nama_user' => $nama_user,
             'kondisi_barang' => [
                 'Baik',
                 'Rusak Ringan',
@@ -35,7 +44,7 @@ class Barang extends BaseController
         ];
         echo view('layout/header', $data);
         echo view('layout/topbar');
-        echo view('layout/sidebar_admin');
+        echo view('layout/sidebar_admin', $data);
         echo view('admin/kelolabarang');
         echo view('layout/footer');
     }

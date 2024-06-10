@@ -18,29 +18,34 @@
                       </div>
                     </div>
 
-                    <form class="row g-3" action="">
+                    <!-- Flash Data -->
+                    <?php if (session()->getFlashdata('success')) : ?>
+                      <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <?= session()->getFlashdata('success') ?>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                      </div>
+                    <?php endif; ?>
+
+                    <?php if (session()->getFlashdata('gagal')) : ?>
+                      <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <?= session()->getFlashdata('gagal') ?>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                      </div>
+                    <?php endif; ?>
+
+                    <form class="row g-3" action="<?= base_url('/login') ?>" method="post">
                       <div class="col-12">
                         <label for="Username" class="form-label">Username</label>
                         <div class="input-group has-validation">
-                          <input type="text" name="username" class="form-control" id="Username" required />
-                          <div class="invalid-feedback">
-                            Please enter your username.
-                          </div>
+                          <input type="text" name="username" class="form-control" id="Username" />
                         </div>
                       </div>
 
                       <div class="col-12">
                         <label for="Password" class="form-label">Password</label>
-                        <input type="password" name="password" class="form-control" id="Password" required />
-                        <div class="invalid-feedback">
-                          Please enter your password!
-                        </div>
+                        <input type="password" name="password" class="form-control" id="Password" />
                       </div>
 
-                      <div class="col-12">
-                        <input class="form-check-input" type="checkbox" name="remember" value="true" id="rememberMe" />
-                        <label class="form-check-label" for="rememberMe">Remember me</label>
-                      </div>
                       <div class="col-12">
                         <button class="btn btn-primary w-100" type="submit">
                           Login
