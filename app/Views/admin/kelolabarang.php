@@ -55,11 +55,6 @@
 
             </div>
 
-
-
-
-
-
             <!-- Flash Data -->
             <?php if (session()->getFlashdata('success')) : ?>
               <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -92,6 +87,10 @@
                       <div class="col-12">
                         <label for="nama_barang" class="form-label">Nama Barang</label>
                         <input name="nama_barang" type="text" class="form-control" id="nama_barang" required>
+                      </div>
+                      <div class="col-12">
+                        <label for="no_index" class="form-label">index Barang</label>
+                        <input name="no_index" type="number" class="form-control" id="no_index" value="1" min="1" required>
                       </div>
                       <div class="col-12">
                         <label for="kategori" class="form-label">Kategori</label>
@@ -249,8 +248,8 @@
                           <input type="text" class="form-control" id="nama_barang" name="nama_barang" value="<?= $brg['nama_barang']; ?>">
                         </div>
                         <div class="col-12">
-                          <label for="kategori_barang" class="form-label">kategori_barang</label>
-                          <select name="kategori_barang" class="form-select" aria-label="Pilih kategori" id="kategori_barang" required>
+                          <label for="kategori" class="form-label">kategori barang</label>
+                          <select name="idkategori" class="form-select" aria-label="Pilih kategori" id="idkategori" required>
                             <option selected disabled>Pilih Kategori</option>
                             <?php foreach ($kategori as $k) : ?>
                               <option value="<?= $k['idkategori']; ?>" <?= ($brg['idkategori'] == $k['idkategori']) ? 'selected' : ''; ?>><?= $k['nama_kategori']; ?></option>
@@ -275,7 +274,7 @@
                         </div>
                         <div class="col-12">
                           <label for="tanggal_masuk" class="form-label">Tanggal Masuk</label>
-                          <input type="date" class="form-control" id="tanggal_masuk" name="tanggal_masuk" value="<?= $brg['tgl_masuk']; ?>">
+                          <input type="date" class="form-control" id="tgl_masuk" name="tgl_masuk" value="<?= $brg['tgl_masuk']; ?>">
                         </div>
 
 

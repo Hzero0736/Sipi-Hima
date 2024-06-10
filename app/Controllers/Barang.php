@@ -40,6 +40,7 @@ class Barang extends BaseController
         echo view('layout/footer');
     }
 
+
     public function tambah()
     {
         $data = $this->request->getPost();
@@ -83,9 +84,10 @@ class Barang extends BaseController
             $singkatanBarang .= strtoupper(substr($word, 0, 3));
         }
 
-        $tglMasuk = str_replace('-', '', $data['tgl_masuk']);
+        $tahunMasuk = date('Y', strtotime($data['tgl_masuk']));
+        $noIndex = $data['no_index'];
 
-        $kdbarang = $singkatanKategori . '_' . $singkatanBarang . '_' . $tglMasuk;
+        $kdbarang = $singkatanKategori . '_' . $singkatanBarang . '_' . $tahunMasuk . '_' . str_pad($noIndex, 3, '0', STR_PAD_LEFT);
 
         // Periksa keunikan kode barang
         if (!$this->barangModel->isKodeBarangUnique($kdbarang)) {
@@ -125,15 +127,15 @@ class Barang extends BaseController
     {
         $data = $this->request->getPost();
         $barangModel = new Barang_m();
+        $kategoriModel = new Kategori_m();
         $validation = \Config\Services::validation();
         $barangLama = $barangModel->find($kdbarang);
 
         $rules = [
             'kdbarang' => [
-                'rules' => $data['kdbarang'] != $barangLama['kdbarang'] ? 'required|is_unique[barang.kdbarang,kdbarang,' . $kdbarang . ']' : 'required',
+                'rules' => 'required',
                 'errors' => [
                     'required' => 'Kode barang tidak boleh kosong',
-                    'is_unique' => 'Kode barang sudah ada, silakan coba lagi'
                 ],
             ],
             'nama_barang' => [
@@ -184,8 +186,17 @@ class Barang extends BaseController
                 $data['foto_barang'] = $barangLama['foto_barang'];
             }
 
+            // Cek apakah kdbarang diubah atau tidak
+            if ($data['kdbarang'] != $barangLama['kdbarang']) {
+                // Jika kdbarang diubah, tampilkan pesan error
+                session()->setFlashdata('error', 'Kode barang tidak dapat diubah');
+                return redirect()->to('/barang');
+            }
+
+            $data['nama_barang'] = $this->request->getPost('nama_barang');
+            // ... data lainnya
             $ubah = $barangModel->editBarang($kdbarang, $data);
-            if (!$ubah) {
+            if ($ubah === false) {
                 session()->setFlashdata('error', 'Data gagal diubah');
                 return redirect()->to('/barang');
             } else {
@@ -194,6 +205,7 @@ class Barang extends BaseController
             }
         }
     }
+
 
     public function hapus($kdbarang)
     {

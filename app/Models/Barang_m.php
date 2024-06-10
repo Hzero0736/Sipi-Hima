@@ -77,7 +77,9 @@ class Barang_m extends Model
 
     public function editBarang($kdbarang, $data)
     {
-        return $this->update(['kdbarang' => $kdbarang], $data);
+        $builder = $this->db->table($this->table);
+        $builder->where('kdbarang', $kdbarang);
+        return $builder->update($data);
     }
 
     public function getBarangByFilter($kategori = null, $start_date = null, $end_date = null, $cetak_semua = false)
@@ -116,5 +118,33 @@ class Barang_m extends Model
     public function getJumlahBarang()
     {
         return $this->countAll();
+    }
+
+    public function getJumlahBarangByNamaBarang($namaBarang)
+    {
+        $namaBarang = strtolower($namaBarang);
+        $namaBarang = str_replace(' ', '_', $namaBarang);
+
+        $builder = $this->db->table('barang');
+        $builder->like('LOWER(nama_barang)', $namaBarang);
+        $query = $builder->get();
+
+        $jumlahBarang = $query->getNumRows();
+
+        // Menambahkan nomor urut berdasarkan jumlah nama barang yang muncul
+        $builder = $this->db->table('barang');
+        $builder->groupBy('nama_barang');
+        $builder->having('LOWER(nama_barang)', $namaBarang);
+        $query = $builder->get();
+
+        $jumlahNamaBarang = $query->getNumRows();
+
+        if ($jumlahNamaBarang > 0) {
+            $jumlahBarang = $jumlahNamaBarang + 1;
+        } else {
+            $jumlahBarang = 1;
+        }
+
+        return $jumlahBarang;
     }
 }

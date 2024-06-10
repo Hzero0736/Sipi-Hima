@@ -36,7 +36,7 @@
 
 <body>
     <div style="text-align:center">
-        <h3> Laporan Daftar Inventaris Barang HIMA-TI POLITALA</h3>
+        <h3>Laporan Daftar Inventaris Barang HIMA-TI POLITALA</h3>
     </div>
     <table id="table">
         <thead>

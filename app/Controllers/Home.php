@@ -37,4 +37,52 @@ class Home extends BaseController
         echo view('layout/header', $data);
         echo view('admin/login');
     }
+
+    public function pelanggan()
+    {
+        $data = [
+            'title' => 'Pelanggan | Inventaris HIMA-TI'
+        ];
+        echo view('layout/header', $data);
+        echo view('layout/topbar');
+        echo view('layout/sidebar_admin');
+        echo view('admin/pelanggan');
+        echo view('layout/footer');
+    }
+
+    public function pinjambarang()
+    {
+        $data = [
+            'title' => 'Pinjam Barang | Inventaris HIMA-TI'
+        ];
+        echo view('layout/header', $data);
+        echo view('layout/topbar');
+        echo view('layout/sidebar_admin');
+        echo view('admin/pinjambarang');
+        echo view('layout/footer');
+    }
+
+    public function titipbarang()
+    {
+        $data = [
+            'title' => 'Titip Barang | Inventaris HIMA-TI'
+        ];
+        echo view('layout/header', $data);
+        echo view('layout/topbar');
+        echo view('layout/sidebar_admin');
+        echo view('admin/titipbarang');
+        echo view('layout/footer');
+    }
+
+    public function user()
+    {
+        $data = [
+            'title' => 'User | Inventaris HIMA-TI'
+        ];
+        echo view('layout/header', $data);
+        echo view('layout/topbar');
+        echo view('layout/sidebar_admin');
+        echo view('admin/user');
+        echo view('layout/footer');
+    }
 }

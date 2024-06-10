@@ -57,14 +57,14 @@
     </li><!-- End Penitipan Nav -->
 
     <li class="nav-item">
-      <a class="nav-link collapsed" href="users-profile.html" id="data-pelanggan-link">
+      <a class="nav-link collapsed" href="/pelanggan" id="data-pelanggan-link">
         <i class="ri-group-3-line"></i>
         <span>Data Pelanggan</span>
       </a>
     </li><!-- End Pelanggan Nav -->
 
     <li class="nav-item">
-      <a class="nav-link collapsed" href="users-profile.html" id="kelola-petugas-link">
+      <a class="nav-link collapsed" href="/user" id="kelola-petugas-link">
         <i class="ri-user-add-line"></i>
         <span>Kelola Petugas</span>
       </a>
