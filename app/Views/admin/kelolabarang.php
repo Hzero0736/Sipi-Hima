@@ -169,7 +169,7 @@
                     </td>
 
                     <td>
-                      <button type="button" class="btn btn-warning btn" data-bs-toggle="modal" data-bs-target="#edit<?= $brg['kdbarang']; ?>">
+                      <button type="button" class="btn btn-warning btn-" data-bs-toggle="modal" data-bs-target="#edit<?= $brg['kdbarang']; ?>">
                         <i class="ri-edit-box-line"></i>
                       </button>
 
@@ -244,7 +244,7 @@
                       <form action="/barang/edit<?= $brg['kdbarang']; ?>" method="post" enctype="multipart/form-data" class="row g-3" id="form-edit <?= $brg['kdbarang']; ?>">
                         <div class="col-12">
                           <label for="kdbarang" class="form-label">Kode Barang</label>
-                          <input type="text" class="form-control" id="kdbarang" name="kdbarang" value="<?= $brg['kdbarang']; ?>">
+                          <input type="text" class="form-control" id="kdbarang" name="kdbarang" value="<?= $brg['kdbarang']; ?>" readonly>
                         </div>
                         <div class="col-12">
                           <label for="nama_barang" class="form-label">Nama Barang</label>

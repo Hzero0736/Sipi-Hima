@@ -1,65 +1,108 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= $title; ?></title>
+    <title>Laporan Barang</title>
     <style>
-        #table {
-            font-family: "times new roman", Times, serif;
-            border-collapse: collapse;
+        body {
+            font-family: 'Times New Roman', Times, serif;
+
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+            position: relative;
+            padding: 20px;
+        }
+
+        .header img {
+            width: 100px;
+            position: absolute;
+            left: 20px;
+            top: 20px;
+        }
+
+        .header .title {
+            display: inline-block;
+            margin-left: 120px;
+        }
+
+        .divider {
+            border-bottom: 3px solid black;
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
+
+        .content {
+            margin: 20px;
+        }
+
+        .footer {
+            text-align: right;
+            margin-top: 50px;
+        }
+
+        .footer .signature {
+            display: inline-block;
+            margin-top: 50px;
+        }
+
+        table {
             width: 100%;
+            border-collapse: collapse;
         }
 
-        #table td,
-        #table th {
-            border: 1px solid #ddd;
-            padding: 8px;
+        table,
+        th,
+        td {
+            border: 1px solid black;
+            padding: 5px;
         }
 
-        #table tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
-
-        #table tr:hover {
-            background-color: #ddd;
-        }
-
-        #table th {
-            padding-top: 10px;
-            padding-bottom: 10px;
+        th,
+        td {
             text-align: left;
         }
     </style>
 </head>
 
 <body>
-    <div style="text-align:center">
-        <h3>Laporan Daftar Inventaris Barang HIMA-TI POLITALA</h3>
+    <div class="header">
+        <img src="<?= $logo_base64 ?>" alt="Logo">
+        <div class="title">
+            <h3><b>HIMPUNAN MAHASISWA POLITEKNIK NEGERI TANAH LAUT</b></h3>
+            <p>Alamat: Jl. A.Yani Km. 06 Desa Panggung, Kalimantan Selatan 70815</p>
+            <p>Email: himati@politala.ac.id</p>
+        </div>
     </div>
-    <table id="table">
-        <thead>
-            <tr>
-                <th>Kode Barang</th>
-                <th>Nama Barang</th>
-                <th>Kategori</th>
-                <th>Tanggal Masuk</th>
-                <th>Kondisi</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($barang as $brg) : ?>
+    <div class="divider"></div>
+    <div class="content">
+        <h2><?= $title ?></h2>
+        <p>Berikut ini adalah laporan barang dari tanggal <?= $start_date ?> sampai <?= $end_date ?>:</p>
+        <table>
+            <thead>
                 <tr>
-                    <td scope="row"><?= $brg['kdbarang']; ?></td>
-                    <td><?= $brg['nama_barang']; ?></td>
-                    <td><?= $brg['nama_kategori']; ?></td>
-                    <td><?= date('d-m-Y', strtotime($brg['tgl_masuk'])); ?></td>
-                    <td><?= $brg['kondisi_barang']; ?></td>
+                    <th>No</th>
+                    <th>Nama Barang</th>
+                    <th>Kategori</th>
+                    <th>Tanggal Masuk</th>
+                    <th>Kondisi Barang</th>
                 </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                <?php $no = 1;
+                foreach ($barang as $brg) : ?>
+                    <tr>
+                        <td><?= $no++ ?></td>
+                        <td><?= $brg['nama_barang']; ?></td>
+                        <td><?= $brg['nama_kategori']; ?></td>
+                        <td><?= date('d-m-Y', strtotime($brg['tgl_masuk'])); ?></td>
+                        <td><?= $brg['kondisi_barang']; ?></td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
 </body>
 
 </html>

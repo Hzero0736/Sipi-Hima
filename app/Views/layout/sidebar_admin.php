@@ -65,7 +65,7 @@
 
     <?php if ($level_user == 'admin') : ?>
       <li class="nav-item">
-        <a class="nav-link collapsed" href="/user" id="kelola-petugas-link">
+        <a class="nav-link collapsed" href="/pengguna" id="kelola-petugas-link">
           <i class="ri-user-add-line"></i>
           <span>Kelola Petugas</span>
         </a>

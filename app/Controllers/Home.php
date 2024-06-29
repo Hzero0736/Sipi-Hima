@@ -75,16 +75,4 @@ class Home extends BaseController
         echo view('admin/titipbarang');
         echo view('layout/footer');
     }
-
-    public function user()
-    {
-        $data = [
-            'title' => 'User | Inventaris HIMA-TI'
-        ];
-        echo view('layout/header', $data);
-        echo view('layout/topbar');
-        echo view('layout/sidebar_admin');
-        echo view('admin/user');
-        echo view('layout/footer');
-    }
 }

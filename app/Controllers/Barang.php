@@ -236,28 +236,42 @@ class Barang extends BaseController
 
     public function generatepdf()
     {
+        ini_set('max_execution_time', 180);
 
         $kategori = $this->request->getGet('kategori');
         $start_date = $this->request->getGet('start_date');
         $end_date = $this->request->getGet('end_date');
         $cetak_semua = $this->request->getGet('cetak_semua');
 
+        $logo_path = FCPATH . '/assets/img/hmti.png';
+        $logo_base64 = $this->encodeImageToBase64($logo_path);
+
         $Pdfgenerator = new Pdfgenerator();
         $data = [
             'title' => 'Laporan Barang',
             'barang' => $this->barangModel->getBarangByFilter($kategori, $start_date, $end_date, $cetak_semua),
+            'start_date' => $start_date,
+            'end_date' => $end_date,
+            'logo_base64' => $logo_base64,
         ];
 
         // filename dari pdf ketika didownload
         $file_pdf = 'laporan_Barang_HIMA';
         // setting paper
         $paper = 'A4';
-        //orientasi paper potrait / landscape
+        // orientasi paper potrait / landscape
         $orientation = "portrait";
 
         $html = view('admin/laporanbarang', $data);
 
         // run dompdf
         $Pdfgenerator->generate($html, $file_pdf, $paper, $orientation);
+    }
+    private function encodeImageToBase64($path)
+    {
+        $type = pathinfo($path, PATHINFO_EXTENSION);
+        $data = file_get_contents($path);
+        $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+        return $base64;
     }
 }
