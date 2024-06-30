@@ -53,10 +53,10 @@
           <div class="card-body">
             <h5 class="card-title text-white">Data Peminjaman</h5>
             <div class="center-text">
-              <h1>50</h1>
+              <h1><?= $jumlahpeminjaman; ?></h1>
             </div>
             <div class="center-text mt-3">
-              <a href="#" class="text-decoration-none text-white">Lihat Detail</a>
+              <a href="/peminjaman" class="text-decoration-none text-white">Lihat Detail</a>
             </div>
           </div>
         </div>
@@ -68,10 +68,10 @@
           <div class="card-body">
             <h5 class="card-title text-white">Data penitipan</h5>
             <div class="center-text">
-              <h1>50</h1>
+              <h1><?= $jumlahpenitipan; ?></h1>
             </div>
             <div class="center-text mt-3">
-              <a href="#" class="text-decoration-none text-white">Lihat Detail</a>
+              <a href="/penitipan" class="text-decoration-none text-white">Lihat Detail</a>
             </div>
           </div>
         </div>
@@ -81,12 +81,12 @@
 
         <div class="card bg-success text-white">
           <div class="card-body">
-            <h5 class="card-title text-white">Data pengembalian</h5>
+            <h5 class="card-title text-white">Data Pelanggan</h5>
             <div class="center-text">
-              <h1>50</h1>
+              <h1><?= $jumlahpelanggan; ?></h1>
             </div>
             <div class="center-text mt-3">
-              <a href="#" class="text-decoration-none text-white">Lihat Detail</a>
+              <a href="/pelanggan" class="text-decoration-none text-white">Lihat Detail</a>
             </div>
           </div>
         </div>

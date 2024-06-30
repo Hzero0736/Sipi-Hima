@@ -21,55 +21,78 @@
                     <h5 class="modal-title">TAMBAH PEMINJAMAN</h5>
                   </div>
                   <div class="modal-body">
-                    <form class="row g-3">
+                    <form class="row g-3" method="post" action="<?= base_url() ?>/peminjaman/tambah">
                       <div class="col-12">
-                        <label for="inputNanme4" class="form-label">Nama Peminjam</label>
-                        <input type="text" class="form-control" id="inputNanme4">
-                      </div>
-                      <div class="col-12">
-                        <label for="inputAddress" class="form-label">Nama Barang</label>
-                        <select class="form-control" id="kategori">
+                        <label for="nama_peminjaman" class="form-label">Nama Barang</label>
+                        <select class="form-control" id="kdbarang" name="kdbarang" required>
                           <option value="" disabled selected>Pilih Barang</option>
-                          <option value="kategori1">Kursi</option>
-                          <option value="kategori2">Meja</option>
-                          <option value="kategori3">Proyektor</option>
+                          <?php foreach ($barang as $b) : ?>
+                            <option value="<?= $b['kdbarang']; ?>"><?= $b['nama_barang']; ?> (<?= $b['kondisi_barang']; ?>)</option>
+                          <?php endforeach; ?>
                         </select>
                       </div>
                       <div class="col-12">
-                        <label for="satuanBarang" class="form-label">Satuan</label>
-                        <input type="number" class="form-control" id="satuanBarang" name="satuanBarang" required>
+                        <label for="idpelanggan" class="form-label">Nama Peminjam</label>
+                        <select class="form-control" id="idpelanggan" name="idpelanggan" required>
+                          <option value="" disabled selected>Pilih Peminjam</option>
+                          <?php foreach ($pelanggan as $p) : ?>
+                            <option value="<?= $p['idpelanggan']; ?>"><?= $p['nama_pelanggan']; ?> (<?= $p['delegasi']; ?>)</option>
+                          <?php endforeach; ?>
+                        </select>
                       </div>
                       <div class="col-12">
-                        <label for="waktuPinjam" class="form-label">Waktu Pinjam</label>
-                        <input type="datetime-local" class="form-control" id="waktuPinjam" name="waktuPinjam" required>
+                        <label for="tanggal_peminjaman" class="form-label">Tanggal Peminjaman</label>
+                        <input type="datetime-local" class="form-control" id="tanggal_peminjaman" name="tanggal_peminjaman" required>
                       </div>
                       <div class="col-12">
-                        <label for="waktuKembali" class="form-label">Waktu Kembali</label>
-                        <input type="datetime-local" class="form-control" id="waktuKembali" name="waktuKembali" required>
+                        <label for="tanggal_pengembalian" class="form-label">Tanggal Pengembalian</label>
+                        <input type="datetime-local" class="form-control" id="tanggal_pengembalian" name="tanggal_pengembalian" required>
+                      </div>
+                      <div class="col-12">
+                        <label for="status" class="form-label">Status</label>
+                        <select name="status" class="form-select" aria-label="Pilih Kondisi" id="status" required>
+                          <option selected disabled>Pilih Kondisi</option>
+                          <?php foreach ($status as $status_barang) : ?>
+                            <option value="<?= $status_barang ?>"><?= $status_barang ?></option>
+                          <?php endforeach; ?>
+                        </select>
                       </div>
                       <div class="modal-footer d-flex justify-content-center">
                         <button type="submit" class="btn btn-primary">Tambah</button>
                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Kembali</button>
                       </div>
-
+                    </form>
                   </div>
                 </div>
               </div>
-              </form><!-- Vertical Form -->
             </div><!-- End Vertically centered Modal-->
 
-            <button type="button" class="btn btn-primary mt-3 mb-2" id="printButton">
-              CETAK
+            <button type="button" class="btn btn-secondary mt-3 mb-2" id="printButton">
+              CETAK DATA
             </button>
+
+            <!-- flash data -->
+            <?php if (session()->getFlashdata('success')) : ?>
+              <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <?= session()->getFlashdata('success'); ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+            <?php endif; ?>
+
+            <?php if (session()->getFlashdata('error')) : ?>
+              <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <?= session()->getFlashdata('error'); ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+            <?php endif; ?>
+
 
             <!-- Table with stripped rows -->
             <table class="table datatable text-center">
               <thead>
                 <tr>
                   <th class="text-center">NO</th>
-                  <th class="text-center">
-                    <b>N</b>ama Peminjam
-                  </th>
+                  <th class="text-center">Nama Peminjam</th>
                   <th class="text-center">Nama Barang</th>
                   <th class="text-center">Tanggal Pinjam</th>
                   <th class="text-center">Tanggal Kembali</th>
@@ -78,250 +101,152 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>01</td>
-                  <td>Arta</td>
-                  <td>kursi</td>
-                  <td>10/07/2023</td>
-                  <td>12/07/2023</td>
-                  <td>prosess</td>
-                  <td>
-                    <!-- Button detail barang -->
-                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#detailModal"><i class="bi bi-eye"></i></button>
+                <?php foreach ($peminjaman as $index => $p) : ?>
+                  <tr>
+                    <td class="text-center"><?= $index + 1; ?></td>
+                    <td class="text-center"><?= $p['nama_pelanggan']; ?></td>
+                    <td class="text-center"><?= $p['nama_barang']; ?></td>
+                    <td class="text-center"><?= $p['tanggal_peminjaman']; ?></td>
+                    <td class="text-center"><?= $p['tanggal_pengembalian']; ?></td>
+                    <td class="text-center"><?= $p['status']; ?></td>
+                    <td class="text-center">
+                      <div class="btn-group" role="group">
+                        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#detailModal<?= $p['id_peminjaman']; ?>">
+                          <i class="bi bi-eye"></i>
+                        </button>
+                        <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editModal<?= $p['id_peminjaman']; ?>"><i class="bi bi-pencil"></i></button>
+                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal<?= $p['id_peminjaman']; ?>"><i class="bi bi-trash"></i></button>
+                      </div>
+                    </td>
+                  </tr>
 
-                    <!-- Modal -->
-                    <div class="modal fade" id="detailModal" tabindex="-1" aria-labelledby="detailModalLabel" aria-hidden="true">
-                      <div class="modal-dialog modal-dialog-centered">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <h5 class="modal-title" id="detailModalLabel">DETAIL PEMINJAMAN</h5>
-                          </div>
-
-                          <div class="modal-body">
-                            <div class="row g-3">
-                              <div class="col-12 d-flex justify-content-between">
-                                <label class="form-label">Status:</label>
-                                <p id="kodeBarang" class="mb-0 text-succes">Selesai</p>
-                              </div>
-                              <div class="col-12 d-flex justify-content-between">
-                                <label class="form-label">Nama Pelanggan:</label>
-                                <p id="namaBarang" class="mb-0">Artod</p>
-                              </div>
-                              <div class="col-12 d-flex justify-content-between">
-                                <label class="form-label">Nama Barang:</label>
-                                <p id="namaBarang" class="mb-0">meja</p>
-                              </div>
-                              <div class="col-12 d-flex justify-content-between">
-                                <label class="form-label">Satuan:</label>
-                                <p id="satuanBarang" class="mb-0">40</p>
-                              </div>
-                              <div class="col-12 d-flex justify-content-between">
-                                <label class="form-label">Waktu Pinjam:</label>
-                                <p id="satuanBarang" class="mb-0">10/07/2023</p>
-                              </div>
-                              <div class="col-12 d-flex justify-content-between">
-                                <label class="form-label">Waktu Kembali:</label>
-                                <p id="satuanBarang" class="mb-0">10/07/2023</p>
-                              </div>
-
+                  <!-- Modal Detail -->
+                  <div class="modal fade" id="detailModal<?= $p['id_peminjaman']; ?>" tabindex="-1" aria-labelledby="detailModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="detailModalLabel">Detail Peminjaman</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                          <div class="row">
+                            <div class="col-12">
+                              <strong>Status:</strong>
+                              <p><?= $p['status']; ?></p>
+                            </div>
+                            <div class="col-12">
+                              <strong>Nama Peminjam:</strong>
+                              <p><?= $p['nama_pelanggan']; ?></p>
+                            </div>
+                            <div class="col-12">
+                              <strong>Nama Barang:</strong>
+                              <p><?= $p['nama_barang']; ?></p>
+                            </div>
+                            <div class="col-12">
+                              <strong>Tanggal Peminjaman:</strong>
+                              <p><?= $p['tanggal_peminjaman']; ?></p>
+                            </div>
+                            <div class="col-12">
+                              <strong>Tanggal Pengembalian:</strong>
+                              <p><?= $p['tanggal_pengembalian']; ?></p>
                             </div>
                           </div>
-                          <div class="modal-footer text-center">
-                            <button type="button" class="btn btn-danger mx-auto" data-bs-dismiss="modal">Kembali</button>
-                          </div>
+                        </div>
+                        <div class="modal-footer d-flex justify-content-center">
+                          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Kembali</button>
                         </div>
                       </div>
                     </div>
+                  </div>
+                <?php endforeach; ?>
+              </tbody>
+            </table>
           </div>
-          <!-- penutup nya -->
-
-          <!-- Button edit barang -->
-          <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editModal"><i class="bi bi-pencil"></i></button>
-
-          <!-- Modal -->
-          <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="editModalLabel">Edit Peminjaman</h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                  <form id="editForm">
-                    <div class="col-12">
-                      <label for="inputNanme4" class="form-label">Nama Peminjam</label>
-                      <input type="text" class="form-control" id="inputNanme4">
-                    </div>
-                    <div class="col-12">
-                      <label for="inputAddress" class="form-label">Nama Barang</label>
-                      <select class="form-control" id="kategori">
-                        <option value="" disabled selected>Pilih Barang</option>
-                        <option value="kategori1">Kursi</option>
-                        <option value="kategori2">Meja</option>
-                        <option value="kategori3">Proyektor</option>
-                      </select>
-                    </div>
-                    <div class="col-12">
-                      <label for="satuanBarang" class="form-label">Satuan</label>
-                      <input type="number" class="form-control" id="satuanBarang" name="satuanBarang" required>
-                    </div>
-                    <div class="col-12">
-                      <label for="waktuPinjam" class="form-label">Waktu Pinjam</label>
-                      <input type="datetime-local" class="form-control" id="waktuPinjam" name="waktuPinjam" required>
-                    </div>
-                    <div class="col-12">
-                      <label for="waktuKembali" class="form-label">Waktu Kembali</label>
-                      <input type="datetime-local" class="form-control" id="waktuKembali" name="waktuKembali" required>
-                    </div>
-                    <div class="modal-footer d-flex justify-content-center">
-                      <button type="submit" class="btn btn-primary">Tambah</button>
-                      <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Kembali</button>
-                    </div>
-                  </form>
+          <!-- Modal Edit -->
+          <?php foreach ($peminjaman as $p) : ?>
+            <div class="modal fade" id="editModal<?= $p['id_peminjaman']; ?>" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">Edit Peminjaman</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <form class="row g-3" method="post" action="<?= base_url() ?>/peminjaman/edit/<?= $p['id_peminjaman']; ?>">
+                      <div class="col-12">
+                        <label for="idpelanggan" class="form-label">Nama Peminjam</label>
+                        <select class="form-control" id="idpelanggan" name="idpelanggan" required>
+                          <?php foreach ($pelanggan as $pel) : ?>
+                            <option value="<?= $pel['idpelanggan']; ?>" <?= ($pel['idpelanggan'] == $p['idpelanggan']) ? 'selected' : ''; ?>><?= $pel['nama_pelanggan']; ?> (<?= $pel['delegasi']; ?>)</option>
+                          <?php endforeach; ?>
+                        </select>
+                      </div>
+                      <div class="col-12">
+                        <label for="kdbarang" class="form-label">Nama Barang</label>
+                        <select class="form-control" id="kdbarang" name="kdbarang" required>
+                          <?php foreach ($barang as $b) : ?>
+                            <option value="<?= $b['kdbarang']; ?>" <?= ($b['kdbarang'] == $p['kdbarang']) ? 'selected' : ''; ?>><?= $b['nama_barang']; ?> (<?= $b['kondisi_barang']; ?>)</option>
+                          <?php endforeach; ?>
+                        </select>
+                      </div>
+                      <div class="col-12">
+                        <label for="tanggal_peminjaman" class="form-label">Tanggal Peminjaman</label>
+                        <input type="date" class="form-control" id="tanggal_peminjaman" name="tanggal_peminjaman" value="<?= $p['tanggal_peminjaman']; ?>" required>
+                      </div>
+                      <div class="col-12">
+                        <label for="tanggal_pengembalian" class="form-label">Tanggal Pengembalian</label>
+                        <input type="date" class="form-control" id="tanggal_pengembalian" name="tanggal_pengembalian" value="<?= $p['tanggal_pengembalian']; ?>" required>
+                      </div>
+                      <div class="col-12">
+                        <label for="status" class="status">Status</label>
+                        <select class="form-select" id="status" name="status">
+                          <?php foreach ($status as $status_barang) : ?>
+                            <option value="<?= $status_barang ?>" <?= ($status_barang == $p['status']) ? 'selected' : ''; ?>><?= $status_barang ?></option>
+                          <?php endforeach; ?>
+                        </select>
+                      </div>
+                      <div class="modal-footer d-flex justify-content-center">
+                        <button type="submit" class="btn btn-primary">Simpan</button>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Kembali</button>
+                      </div>
+                    </form>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-        <!-- penutup nya -->
-
-        <!-- Button hapus barang -->
-        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash"></i></button>
-
-        <!-- Delete Confirmation Modal -->
-        <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-          <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="deleteModalLabel">Hapus Peminjaman</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-              </div>
-              <div class="modal-body">
-                <p>Anda yakin ingin menghapus Data Peminjaman ini?</p>
-              </div>
-              <div class="modal-footer d-flex justify-content-center">
-                <button type="button" class="btn btn-primary" id="confirmDeleteButton">Yakin</button>
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Kembali</button>
+          <?php endforeach; ?>
+          <!-- Modal Hapus -->
+          <?php foreach ($peminjaman as $p) : ?>
+            <div class="modal fade" id="deleteModal<?= $p['id_peminjaman']; ?>" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">Hapus Peminjaman</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <p>Anda yakin ingin menghapus Data Peminjaman <b> <?= $p['nama_pelanggan']; ?></b> ini?</p>
+                  </div>
+                  <div class="modal-footer d-flex justify-content-center">
+                    <form action="<?php echo base_url('peminjaman/hapus/' . $p['id_peminjaman']); ?>" method="post">
+                      <input type="hidden" name="_method" value="DELETE">
+                      <button type="submit" class="btn btn-primary">Yakin</button>
+                    </form>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Kembali</button>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
+          <?php endforeach; ?>
+
         </div>
       </div>
-      <!-- Penutup nya -->
-
-      </td>
-      </tr>
-      <tr>
-        <td>02</td>
-        <td>Theodore Duran</td>
-        <td>8971</td>
-        <td>Dhanbad</td>
-
-        <td>97%</td>
-      </tr>
-      <tr>
-        <td>03</td>
-        <td>Artra</td>
-        <td>9958</td>
-        <td>Curicó</td>
-
-        <td>37%</td>
-      </tr>
-      <tr>
-        <td>04</td>
-        <td>Theodorerrr Duran</td>
-        <td>8971</td>
-        <td>Dhanbad</td>
-
-        <td>97%</td>
-      </tr>
-      <tr>
-        <td>05</td>
-        <td>Artsfsfa</td>
-        <td>9958</td>
-        <td>Curicó</td>
-
-        <td>37%</td>
-      </tr>
-      <tr>
-        <td>06</td>
-        <td>jhbkjaThescodor</td>
-        <td>8971</td>
-        <td>Dhanbad</td>
-        <td>97%</td>
-      </tr>
-      <tr>
-        <td>07</td>
-        <td>mhjArta</td>
-        <td>9958</td>
-        <td>Curicó</td>
-
-        <td>37%</td>
-      </tr>
-      <tr>
-        <td>08</td>
-        <td>bxvTheodore Duran</td>
-        <td>8971</td>
-        <td>Dhanbad</td>
-
-        <td>97%</td>
-      </tr>
-      <tr>
-        <td>09</td>
-        <td>qdcArta</td>
-        <td>9958</td>
-        <td>Curicó</td>
-
-        <td>37%</td>
-      </tr>
-      <tr>
-        <td>10</td>
-        <td>qweTheodore Duran</td>
-        <td>8971</td>
-        <td>Dhanbad</td>
-
-        <td>97%</td>
-      </tr>
-      <tr>
-        <td>11</td>
-        <td>rtyArta</td>
-        <td>9958</td>
-        <td>Curicó</td>
-
-        <td>37%</td>
-      </tr>
-      <tr>
-        <td>12</td>
-        <td>lavdsvTheodore Duran</td>
-        <td>8971</td>
-        <td>Dhanbad</td>
-        <td>97%</td>
-      </tr>
-      <tr>
-        <td>13</td>
-        <td>svArta</td>
-        <td>9958</td>
-        <td>Curicó</td>
-        <td>37%</td>
-      </tr>
-      <tr>
-        <td>14</td>
-        <td>bfTheodore Duran</td>
-        <td>8971</td>
-        <td>Dhanbad</td>
-
-        <td>97%</td>
-      </tr>
-
-      </tbody>
-      </table>
-      <!-- End Table with stripped rows -->
-
-    </div>
-    </div>
-
-    </div>
     </div>
   </section>
 
-</main><!-- End #main -->
+  <script>
+    document.getElementById('printButton').addEventListener('click', function() {
+      window.print();
+    });
+  </script>
+</main>

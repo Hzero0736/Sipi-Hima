@@ -147,8 +147,6 @@ class Pelanggan extends BaseController
         }
     }
 
-
-
     public function hapus($idpelanggan)
     {
         $hapus = $this->pelangganModel->delete($idpelanggan);

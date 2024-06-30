@@ -38,10 +38,17 @@ $routes->group('', ['filter' => 'isAdminOrPetugas'], static function ($routes) {
     $routes->post('/pelanggan/edit/(:any)', 'Pelanggan::edit/$1');
     $routes->match(['get', 'post'], 'pelanggan/hapus/(:any)', 'Pelanggan::hapus/$1');
     //kelola penitipan
-
-
-    $routes->get('/peminjaman', 'Home::pinjambarang');
-    $routes->get('/penitipan', 'Home::titipbarang');
+    $routes->get('/penitipan', 'Penitipan::index');
+    $routes->post('/penitipan/tambah', 'Penitipan::tambah');
+    $routes->post('/penitipan/edit/(:any)', 'Penitipan::edit/$1');
+    $routes->delete('/penitipan/hapus/(:any)', 'Penitipan::hapus/$1');
+    $routes->get('/penitipan/generatepdf', 'Penitipan::generatepdf');
+    $routes->get('/penitipan/cetaknota/(:any)', 'Penitipan::cetaknota/$1');
+    //kelola peminjaman
+    $routes->get('/peminjaman', 'Peminjaman::index');
+    $routes->post('/peminjaman/tambah', 'Peminjaman::tambah');
+    $routes->post('/peminjaman/edit/(:any)', 'Peminjaman::edit/$1');
+    $routes->delete('/peminjaman/hapus/(:any)', 'Peminjaman::hapus/$1');
 });
 
 // Rute untuk login dan logout

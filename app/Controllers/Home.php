@@ -4,16 +4,25 @@ namespace App\Controllers;
 
 use App\Models\Barang_m;
 use App\Models\Pengguna_m;
+use App\Models\Peminjaman_m;
+use App\Models\Penitipan_m;
+use App\Models\Pelanggan_m;
 
 class Home extends BaseController
 {
     protected $barangModel;
     protected $penggunaModel;
+    protected $peminjamanModel;
+    protected $penitipanModel;
+    protected $pelangganModel;
 
     public function __construct()
     {
         $this->barangModel = new Barang_m();
         $this->penggunaModel = new Pengguna_m();
+        $this->peminjamanModel = new Peminjaman_m();
+        $this->penitipanModel = new Penitipan_m();
+        $this->pelangganModel = new Pelanggan_m();
     }
 
     public function index()
@@ -25,11 +34,17 @@ class Home extends BaseController
         $databarang = $this->barangModel->getBarang();
         $jumlahbarang = $this->barangModel->countAll();
         $jumlahpengguna = $this->penggunaModel->countAll();
+        $jumlahpelanggan = $this->pelangganModel->countAll();
+        $jumlahpeminjaman = $this->peminjamanModel->getJumlahPeminjaman();
+        $jumlahpenitipan = $this->penitipanModel->getJumlahPenitipan();
         $data = [
             'title' => 'Dashboard | Inventaris HIMA-TI',
             'barang' => $databarang,
             'jumlahbarang' => $jumlahbarang,
             'jumlahpengguna' => $jumlahpengguna,
+            'jumlahpeminjaman' => $jumlahpeminjaman,
+            'jumlahpenitipan' => $jumlahpenitipan,
+            'jumlahpelanggan' => $jumlahpelanggan,
             'level_user' => $level_user,
             'nama_user' => $nama_user
         ];
@@ -37,42 +52,6 @@ class Home extends BaseController
         echo view('layout/topbar', $data);
         echo view('layout/sidebar_admin', $data);
         echo view('admin/dashboard', $data);
-        echo view('layout/footer');
-    }
-
-    public function pelanggan()
-    {
-        $data = [
-            'title' => 'Pelanggan | Inventaris HIMA-TI'
-        ];
-        echo view('layout/header', $data);
-        echo view('layout/topbar');
-        echo view('layout/sidebar_admin');
-        echo view('admin/pelanggan');
-        echo view('layout/footer');
-    }
-
-    public function pinjambarang()
-    {
-        $data = [
-            'title' => 'Pinjam Barang | Inventaris HIMA-TI'
-        ];
-        echo view('layout/header', $data);
-        echo view('layout/topbar');
-        echo view('layout/sidebar_admin');
-        echo view('admin/pinjambarang');
-        echo view('layout/footer');
-    }
-
-    public function titipbarang()
-    {
-        $data = [
-            'title' => 'Titip Barang | Inventaris HIMA-TI'
-        ];
-        echo view('layout/header', $data);
-        echo view('layout/topbar');
-        echo view('layout/sidebar_admin');
-        echo view('admin/titipbarang');
         echo view('layout/footer');
     }
 }

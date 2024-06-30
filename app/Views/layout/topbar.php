@@ -30,12 +30,10 @@
            </li>
 
            <li>
-             <form action="/logout" method="get">
-               <button class="dropdown-item d-flex align-items-center">
-                 <i class="bi bi-box-arrow-right"></i>
-                 <span>Log Out</span>
-               </button>
-             </form>
+             <button class="dropdown-item d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#logoutModal">
+               <i class="bi bi-box-arrow-right"></i>
+               <span>Log Out</span>
+             </button>
            </li>
 
          </ul><!-- End Profile Dropdown Items -->

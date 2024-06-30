@@ -169,13 +169,15 @@
                     </td>
 
                     <td>
-                      <button type="button" class="btn btn-warning btn-" data-bs-toggle="modal" data-bs-target="#edit<?= $brg['kdbarang']; ?>">
-                        <i class="ri-edit-box-line"></i>
-                      </button>
+                      <div class="btn-group">
+                        <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#edit<?= $brg['kdbarang']; ?>">
+                          <i class="ri-edit-box-line"></i>
+                        </button>
 
-                      <button type="button" class="btn btn-danger btn" data-bs-toggle="modal" data-bs-target="#hapus<?= $brg['kdbarang']; ?>">
-                        <i class="ri-delete-bin-2-line"></i>
-                      </button>
+                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#hapus<?= $brg['kdbarang']; ?>">
+                          <i class="ri-delete-bin-2-line"></i>
+                        </button>
+                      </div>
                     </td>
 
                   </tr>

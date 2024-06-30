@@ -74,15 +74,11 @@
 
     <li class="nav-heading"></li>
 
-    <form action="/logout" method="get">
-      <li class="nav-item">
-        <button class="nav-link collapsed" type="submit" id="logout-link">
-          <i class="ri-logout-box-line"></i>
-          <span>Logout</span>
-        </button>
-      </li><!-- End Logout Nav -->
-    </form>
-
-
+    <li class="nav-item">
+      <button class="nav-link collapsed" type="button" data-bs-toggle="modal" data-bs-target="#logoutModal">
+        <i class="ri-logout-box-line"></i>
+        <span>Logout</span>
+      </button>
+    </li><!-- End Logout Nav -->
   </ul>
 </aside><!-- End Sidebar -->
