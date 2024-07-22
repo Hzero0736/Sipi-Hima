@@ -53,15 +53,6 @@ class Peminjaman_m extends Model
         return $builder->get()->getResultArray();
     }
 
-    // public function getPenitipanByStatus($status_barang)
-    // {
-    //     return $this->where(['status' => $status_barang])->findAll();
-    // }
-    public function deletePeminjaman($id)
-    {
-        return $this->delete($id);
-    }
-
     public function getJumlahPeminjaman($status = 'sedang dipinjam')
     {
         $builder = $this->db->table('peminjaman');

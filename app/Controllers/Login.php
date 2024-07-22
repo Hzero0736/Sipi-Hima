@@ -23,29 +23,37 @@ class Login extends BaseController
         ];
         echo view('layout/header', $data);
         echo view('admin/login', $data);
+        echo view('layout/footer');
     }
 
     public function login()
     {
         $validation = \Config\Services::validation();
 
-        $validation->setRules([
+        $validation = \Config\Services::validation();
+
+        $rules = [
             'username' => [
                 'label' => 'Username',
                 'rules' => 'required',
                 'errors' => [
-                    'required' => '{field} harus diisi'
+                    'required' => 'Username harus diisi'
                 ]
             ],
             'password' => [
                 'label' => 'Password',
                 'rules' => 'required',
                 'errors' => [
-                    'required' => '{field} harus diisi'
+                    'required' => 'Password harus diisi'
                 ]
             ]
-        ]);
-        if (!$validation->withRequest($this->request)->run()) {
+        ];
+
+        $validation->setRules($rules);
+
+        if (!$this->validate($rules)) {
+            $errors = $validation->getErrors();
+            session()->setFlashdata('gagal', $errors);
             return redirect()->to('/')->withInput();
         }
 
@@ -80,7 +88,6 @@ class Login extends BaseController
     public function logout()
     {
         session()->destroy();
-        session()->setFlashdata('success', 'Anda berhasil logout');
-        return redirect()->to('/');
+        return redirect()->to('/')->with('success', 'Anda berhasil logout');
     }
 }

@@ -27,17 +27,19 @@
                     <?php endif; ?>
 
                     <?php if (session()->getFlashdata('gagal')) : ?>
-                      <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        <?= session()->getFlashdata('gagal') ?>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                      </div>
+                      <?php foreach ((array)session()->getFlashdata('gagal') as $error) : ?>
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                          <?= $error ?>
+                          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                      <?php endforeach; ?>
                     <?php endif; ?>
 
                     <form class="row g-3" action="<?= base_url('/login') ?>" method="post">
                       <div class="col-12">
                         <label for="Username" class="form-label">Username</label>
                         <div class="input-group has-validation">
-                          <input type="text" name="username" class="form-control" id="Username" />
+                          <input type="text" name="username" class="form-control" id="Username" autocomplete="off" />
                         </div>
                       </div>
 

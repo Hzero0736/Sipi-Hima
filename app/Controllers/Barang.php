@@ -103,16 +103,13 @@ class Barang extends BaseController
             session()->setFlashdata('error', 'Kode barang sudah ada, silakan coba lagi.');
             return redirect()->to('/barang');
         }
-
         $filegambar = $this->request->getFile('foto_barang');
-
         if ($filegambar->getError() == 4) {
             $namafoto = 'default.jpg';
         } else {
             $namafoto = $filegambar->getRandomName();
             $filegambar->move('img', $namafoto);
         }
-
         $request = $this->barangModel->insert([
             'kdbarang' => $kdbarang,
             'nama_barang' => $data['nama_barang'],
@@ -130,7 +127,6 @@ class Barang extends BaseController
             return redirect()->to('/barang');
         }
     }
-
 
     public function edit($kdbarang)
     {
@@ -215,7 +211,6 @@ class Barang extends BaseController
         }
     }
 
-
     public function hapus($kdbarang)
     {
         $barang = $this->barangModel->find($kdbarang);
@@ -233,15 +228,13 @@ class Barang extends BaseController
         }
     }
 
-
     public function generatepdf()
     {
-        ini_set('max_execution_time', 180);
-
         $kategori = $this->request->getGet('kategori');
+        $kondisi = $this->request->getGet('kondisi');
         $start_date = $this->request->getGet('start_date');
         $end_date = $this->request->getGet('end_date');
-        $cetak_semua = $this->request->getGet('cetak_semua');
+        $cetak_semua = $this->request->getGet('cetak_semua') === 'true';
 
         $logo_path = FCPATH . '/assets/img/hmti.png';
         $logo_base64 = $this->encodeImageToBase64($logo_path);
@@ -249,7 +242,7 @@ class Barang extends BaseController
         $Pdfgenerator = new Pdfgenerator();
         $data = [
             'title' => 'Laporan Barang',
-            'barang' => $this->barangModel->getBarangByFilter($kategori, $start_date, $end_date, $cetak_semua),
+            'barang' => $this->barangModel->getBarangByFilter($kategori, $start_date, $end_date, $kondisi, $cetak_semua),
             'start_date' => $start_date,
             'end_date' => $end_date,
             'logo_base64' => $logo_base64,

@@ -54,12 +54,6 @@ class Barang_m extends Model
         return $query->getResultArray();
     }
 
-    public function getLastKodeBarangByKategoriBarang($singkatanKategori, $singkatanBarang)
-    {
-        $query = $this->db->query("SELECT kdbarang FROM barang WHERE kdbarang LIKE '$singkatanKategori$singkatanBarang%' ORDER BY kdbarang DESC LIMIT 1");
-        return $query->getRow() ? $query->getRow()->kdbarang : false;
-    }
-
     public function isKodeBarangUnique($kdbarang)
     {
         $query = $this->db->table('barang')
@@ -69,12 +63,6 @@ class Barang_m extends Model
         return $query->getNumRows() === 0;
     }
 
-    public function getLastKodeBarangBySingkatanBarang($singkatanBarang)
-    {
-        $query = $this->db->query("SELECT kdbarang FROM barang WHERE kdbarang LIKE '%$singkatanBarang%' ORDER BY kdbarang DESC LIMIT 1");
-        return $query->getRow() ? $query->getRow()->kdbarang : null;
-    }
-
     public function editBarang($kdbarang, $data)
     {
         $builder = $this->db->table($this->table);
@@ -82,7 +70,7 @@ class Barang_m extends Model
         return $builder->update($data);
     }
 
-    public function getBarangByFilter($kategori = null, $start_date = null, $end_date = null, $cetak_semua = false)
+    public function getBarangByFilter($kategori = null, $start_date = null, $end_date = null, $kondisi = null, $cetak_semua = false)
     {
         $builder = $this->db->table('barang');
         $builder->select('barang.*, kategori.nama_kategori');
@@ -91,11 +79,6 @@ class Barang_m extends Model
         if (!$cetak_semua) {
             if ($kategori) {
                 $builder->where('barang.idkategori', $kategori);
-            } else {
-                // Jika kategori tidak dipilih, tampilkan semua kategori
-                $builder->groupStart();
-                $builder->orWhere('barang.idkategori IS NOT NULL');
-                $builder->groupEnd();
             }
             if ($start_date && $end_date) {
                 $builder->where('barang.tgl_masuk >=', $start_date);
@@ -105,46 +88,16 @@ class Barang_m extends Model
             } elseif ($end_date) {
                 $builder->where('barang.tgl_masuk <=', $end_date);
             }
-
-            return $builder->get()->getResultArray();
+            if ($kondisi) {
+                $builder->where('barang.kondisi_barang', $kondisi);
+            }
         }
-    }
 
-    public function getBarangByKondisi($kondisi)
-    {
-        return $this->where(['kondisi_barang' => $kondisi])->findAll();
+        return $builder->get()->getResultArray();
     }
 
     public function getJumlahBarang()
     {
         return $this->countAll();
-    }
-
-    public function getJumlahBarangByNamaBarang($namaBarang)
-    {
-        $namaBarang = strtolower($namaBarang);
-        $namaBarang = str_replace(' ', '_', $namaBarang);
-
-        $builder = $this->db->table('barang');
-        $builder->like('LOWER(nama_barang)', $namaBarang);
-        $query = $builder->get();
-
-        $jumlahBarang = $query->getNumRows();
-
-        // Menambahkan nomor urut berdasarkan jumlah nama barang yang muncul
-        $builder = $this->db->table('barang');
-        $builder->groupBy('nama_barang');
-        $builder->having('LOWER(nama_barang)', $namaBarang);
-        $query = $builder->get();
-
-        $jumlahNamaBarang = $query->getNumRows();
-
-        if ($jumlahNamaBarang > 0) {
-            $jumlahBarang = $jumlahNamaBarang + 1;
-        } else {
-            $jumlahBarang = 1;
-        }
-
-        return $jumlahBarang;
     }
 }

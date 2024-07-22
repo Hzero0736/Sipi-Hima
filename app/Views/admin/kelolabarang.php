@@ -39,6 +39,15 @@
                           </select>
                         </div>
                         <div class="mb-3">
+                          <label for="kondisi" class="form-label">Kondisi</label>
+                          <select class="form-select" id="kondisi" name="kondisi">
+                            <option value="">Semua Kondisi</option>
+                            <?php foreach ($kondisi_barang as $kondisi) : ?>
+                              <option value="<?= $kondisi ?>"><?= $kondisi ?></option>
+                            <?php endforeach; ?>
+                          </select>
+                        </div>
+                        <div class="mb-3">
                           <label for="start_date" class="form-label">Tanggal Awal</label>
                           <input type="date" class="form-control" id="start_date" name="start_date">
                         </div>
@@ -83,8 +92,6 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
                   <div class="modal-body">
-
-                    <!-- Form -->
                     <form action="/barang/tambah" method="post" enctype="multipart/form-data" class="row g-3">
                       <?= csrf_field() ?>
                       <div class="col-12">
@@ -121,17 +128,15 @@
                         <label for="tgl_masuk" class="form-label">Tanggal Masuk</label>
                         <input name="tgl_masuk" type="date" class="form-control" id="tgl_masuk" required>
                       </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-success">Tambah</button>
+                      </div>
+                    </form>
                   </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-success">Tambah</button>
-                  </div>
-                  </form><!-- Vertical Form -->
-
                 </div>
               </div>
-            </div><!-- End Basic Modal-->
-
+            </div>
             <!-- Table with stripped rows -->
             <table class="table datatable">
               <thead>
@@ -142,7 +147,6 @@
                   <th>Kategori</th>
                   <th>Kondisi</th>
                   <th>Foto</th>
-                  <th>Detail</th>
                   <th>Aksi</th>
                 </tr>
               </thead>
@@ -163,13 +167,10 @@
                     </th>
 
                     <td>
-                      <button type="button" class="btn btn-success btn" data-bs-toggle="modal" data-bs-target="#detail<?= $brg['kdbarang']; ?>">
-                        Detail
-                      </button>
-                    </td>
-
-                    <td>
                       <div class="btn-group">
+                        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#detail<?= $brg['kdbarang']; ?>">
+                          <i class="ri-eye-line"></i>
+                        </button>
                         <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#edit<?= $brg['kdbarang']; ?>">
                           <i class="ri-edit-box-line"></i>
                         </button>
@@ -191,9 +192,17 @@
                           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                          <div class="card-body">
-                            <img src="img/<?= $brg['foto_barang']; ?>" class="card-img-top" alt="...">
-                            <h5 class="card-title"><?= $brg['nama_barang']; ?> (<?= $brg['kondisi_barang']; ?>)</h5>
+                          <div class="row">
+                            <div class="col-md-6">
+                              <img src="img/<?= $brg['foto_barang']; ?>" class="img-fluid" alt="...">
+                            </div>
+                            <div class="col-md-6">
+                              <h5 class="card-title"><?= $brg['nama_barang']; ?> (<?= $brg['kondisi_barang']; ?>)</h5>
+                              <p class="card-text">
+                                <strong>Kategori : </strong> <?= $brg['nama_kategori']; ?><br>
+                                <strong>Tanggal Masuk : </strong> <?= date('d-M-Y', strtotime($brg['tgl_masuk'])); ?><br>
+                              </p>
+                            </div>
                           </div>
                         </div>
                         <div class="modal-footer">
@@ -234,25 +243,23 @@
             <!-- Modal Edit -->
             <?php foreach ($barang as $brg) : ?>
               <div class="modal fade" id="edit<?= $brg['kdbarang']; ?>" tabindex="-1">
-                <div class="modal-dialog">
+                <div class="modal-dialog modal-lg">
                   <div class="modal-content">
                     <div class="modal-header">
                       <h5 class="modal-title">Form Edit Barang</h5>
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-
-                      <!-- Form -->
                       <form action="/barang/edit<?= $brg['kdbarang']; ?>" method="post" enctype="multipart/form-data" class="row g-3" id="form-edit <?= $brg['kdbarang']; ?>">
-                        <div class="col-12">
+                        <div class="col-md-6">
                           <label for="kdbarang" class="form-label">Kode Barang</label>
                           <input type="text" class="form-control" id="kdbarang" name="kdbarang" value="<?= $brg['kdbarang']; ?>" readonly>
                         </div>
-                        <div class="col-12">
+                        <div class="col-md-6">
                           <label for="nama_barang" class="form-label">Nama Barang</label>
                           <input type="text" class="form-control" id="nama_barang" name="nama_barang" value="<?= $brg['nama_barang']; ?>">
                         </div>
-                        <div class="col-12">
+                        <div class="col-md-6">
                           <label for="kategori" class="form-label">kategori barang</label>
                           <select name="idkategori" class="form-select" aria-label="Pilih kategori" id="idkategori" required>
                             <option selected disabled>Pilih Kategori</option>
@@ -261,7 +268,7 @@
                             <?php endforeach; ?>
                           </select>
                         </div>
-                        <div class="col-12">
+                        <div class="col-md-6">
                           <label for="kondisi_barang" class="form-label">Kondisi</label>
                           <select class="form-select" id="kondisi_barang" name="kondisi_barang">
                             <?php foreach ($kondisi_barang as $kondisi) : ?>
@@ -269,30 +276,26 @@
                             <?php endforeach; ?>
                           </select>
                         </div>
-
-                        <div class="col-12">
+                        <div class="col-md-6">
                           <label for="foto_barang" class="form-label">Foto Barang</label>
                           <input type="file" class="form-control" id="foto_barang" name="foto_barang">
                           <?php if ($brg['foto_barang']) : ?>
                             <img src="/img/<?= $brg['foto_barang'] ?>" alt="Foto Barang" class="img-thumbnail mt-2" width="200">
                           <?php endif; ?>
                         </div>
-                        <div class="col-12">
+                        <div class="col-md-6">
                           <label for="tanggal_masuk" class="form-label">Tanggal Masuk</label>
                           <input type="date" class="form-control" id="tgl_masuk" name="tgl_masuk" value="<?= $brg['tgl_masuk']; ?>">
                         </div>
-
-
                     </div>
                     <div class="modal-footer">
                       <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                       <button type="submit" class="btn btn-success">Simpan</button>
                     </div>
-                    </form><!-- Vertical Form -->
-
                   </div>
                 </div>
-              </div><!-- End Basic Modal-->
+              </div>
+              </form>
             <?php endforeach; ?>
 
           </div>

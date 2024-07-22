@@ -67,7 +67,7 @@
       <li class="nav-item">
         <a class="nav-link collapsed" href="/pengguna" id="kelola-petugas-link">
           <i class="ri-user-add-line"></i>
-          <span>Kelola Petugas</span>
+          <span>Kelola Pengguna</span>
         </a>
       </li><!-- End Petugas Nav -->
     <?php endif; ?>

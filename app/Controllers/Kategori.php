@@ -52,7 +52,6 @@ class Kategori extends BaseController
                 ]
             ]
         ];
-
         if (!$this->validate($rules)) {
             $errors = $validation->getErrors();
             if (isset($errors['nama_kategori'])) {
@@ -99,7 +98,6 @@ class Kategori extends BaseController
                 ]
             ]
         ];
-
         if (!$this->validate($rules)) {
             $errors = $validation->getErrors();
             if (isset($errors['nama_kategori'])) {
@@ -111,7 +109,6 @@ class Kategori extends BaseController
                 'nama_kategori' => $data['nama_kategori'] ?? $kategoriLama['nama_kategori'],
                 'deskripsi' => $data['deskripsi']
             ]);
-
             if ($ubah) {
                 session()->setFlashdata('success', 'Kategori berhasil diubah');
             } else {
@@ -119,14 +116,12 @@ class Kategori extends BaseController
             }
             return redirect()->to('/kategori');
         }
-
         return redirect()->to('/kategori');
     }
 
     public function hapus($idkategori)
     {
         $kategori = $this->kategorimodel->find($idkategori);
-
         if ($kategori) {
             $hapus = $this->kategorimodel->delete($idkategori);
             if ($hapus) {
@@ -137,7 +132,6 @@ class Kategori extends BaseController
         } else {
             session()->setFlashdata('error', 'Kategori tidak ditemukan');
         }
-
         return redirect()->to('/kategori');
     }
 }

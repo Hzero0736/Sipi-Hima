@@ -48,14 +48,4 @@ class Kategori_m extends Model
     {
         return $this->findAll();
     }
-
-    public function editkategori($id_kategori, $data)
-    {
-        return $this->update($id_kategori, $data);
-    }
-
-    public function deleteKategori($id)
-    {
-        return $this->delete($id);
-    }
 }

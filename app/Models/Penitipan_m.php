@@ -12,7 +12,7 @@ class Penitipan_m extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['id_penitipan', 'idpelanggan', 'nama_pelanggan', 'nama_barang', 'id_pelanggan', 'nama_barang', 'jumlah_barang', 'deskripsi', 'tgl_titip', 'tgl_kembali', 'foto_titip', 'status'];
+    protected $allowedFields    = ['id_penitipan', 'idpelanggan', 'nama_pelanggan', 'nama_barang', 'jumlah_barang', 'deskripsi', 'tgl_titip', 'tgl_kembali', 'foto_titip', 'status'];
 
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;
@@ -52,14 +52,6 @@ class Penitipan_m extends Model
         $query = $builder->get();
 
         return $query->getResultArray();
-    }
-
-
-    public function editPenitipan($id_penitipan, $data)
-    {
-        $builder = $this->db->table($this->table);
-        $builder->where('id_penitipan', $id_penitipan);
-        return $builder->update($data);
     }
 
     public function getPenitipanByFilter($pelanggan = null, $start_date = null, $end_date = null, $cetak_semua = false)

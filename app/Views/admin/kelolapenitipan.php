@@ -223,6 +223,29 @@
                                                 </div>
                                             </div><!-- End Basic Modal-->
 
+                                            <!-- Delete Confirmation Modal -->
+                                            <div class="modal fade" id="hapus<?= $titipbrg['id_penitipan']; ?>" tabindex="-1" data-bs-backdrop="false">
+                                                <div class="modal-dialog modal-dialog-centered">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title"><i class="ri-alert-line"></i> Peringatan</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body text-center">
+                                                            Apakah Anda Yakin Ingin Menghapus Barang <b><?= $titipbrg['nama_barang']; ?></b>?
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                                                            <form action="/penitipan/hapus/<?= $titipbrg['id_penitipan'] ?>" method="post">
+                                                                <?= csrf_field() ?>
+                                                                <input type="hidden" name="_method" value="DELETE">
+                                                                <button type="submit" class="btn btn-danger">Hapus</button>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div><!-- End Basic Modal-->
+
                                             <!-- Modal -->
                                             <?php foreach ($titipbarang as $titipbrg) : ?>
                                                 <div class="modal fade" id="edit<?= $titipbrg['id_penitipan']; ?>" tabindex="-1">
@@ -290,29 +313,6 @@
                                                 <!-- penutup nya -->
                                             <?php endforeach; ?>
 
-
-                                            <!-- Delete Confirmation Modal -->
-                                            <div class="modal fade" id="hapus<?= $titipbrg['id_penitipan']; ?>" tabindex="-1" data-bs-backdrop="false">
-                                                <div class="modal-dialog modal-dialog-centered">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title"><i class="ri-alert-line"></i> Peringatan</h5>
-                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                        </div>
-                                                        <div class="modal-body text-center">
-                                                            Apakah Anda Yakin Ingin Menghapus Barang <b><?= $titipbrg['nama_barang']; ?></b>?
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                                                            <form action="/penitipan/hapus/<?= $titipbrg['id_penitipan'] ?>" method="post">
-                                                                <?= csrf_field() ?>
-                                                                <input type="hidden" name="_method" value="DELETE">
-                                                                <button type="submit" class="btn btn-danger">Hapus</button>
-                                                            </form>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div><!-- End Basic Modal-->
                                             <!-- Penutup nya -->
                                         </td>
                                     </tr>

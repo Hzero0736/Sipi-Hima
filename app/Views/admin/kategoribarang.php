@@ -12,7 +12,7 @@
                     <div class="card-header">
 
                         <!-- Tambah Barang -->
-                        <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#basicModal">
+                        <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#basicModal"><i class="ri-folder-add-line"></i>
                             Tambah Kategori
                         </button>
 
@@ -79,13 +79,15 @@
                                         <td><?= $k['nama_kategori']; ?></td>
                                         <td><?= $k['deskripsi']; ?></td>
                                         <td>
-                                            <button type="button" class="btn btn-warning btn" data-bs-toggle="modal" data-bs-target="#edit<?= $k['idkategori'] ?>">
-                                                <i class="ri-edit-box-line"></i>
-                                            </button>
+                                            <div class="btn-group" role="group">
+                                                <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#edit<?= $k['idkategori'] ?>">
+                                                    <i class="ri-edit-box-line"></i>
+                                                </button>
 
-                                            <button type="button" class="btn btn-danger btn" data-bs-toggle="modal" data-bs-target="#hapus<?= $k['idkategori']; ?>">
-                                                <i class="ri-delete-bin-2-line"></i>
-                                            </button>
+                                                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#hapus<?= $k['idkategori']; ?>">
+                                                    <i class="ri-delete-bin-2-line"></i>
+                                                </button>
+                                            </div>
                                         </td>
                                     </tr>
 
